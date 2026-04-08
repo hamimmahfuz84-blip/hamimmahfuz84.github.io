@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Tap Pro</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    text-align: center;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color: white;
+}
+
+h1 {
+    margin-top: 15px;
+}
+
+#coin {
+    font-size: 30px;
+    margin: 10px;
+}
+
+#level {
+    margin-bottom: 10px;
+}
+
+.tap-btn {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: gold;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tap-btn:active {
+    transform: scale(0.9);
+}
+
+.btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    background: #00c9ff;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💰 Tap Tap Pro</h1>
+
+<div id="coin">Coins: 0</div>
+<div id="level">Level: 1</div>
+
+<button class="tap-btn" onclick="tap()">TAP</button>
+
+<br><br>
+
+<button class="btn" onclick="upgradeTap()">Upgrade Tap (Cost: 50)</button>
+<button class="btn" onclick="buyAuto()">Auto Income (Cost: 100)</button>
+
+<script>
+let coins = parseInt(localStorage.getItem("coins")) || 0;
+let tapPower = parseInt(localStorage.getItem("tapPower")) || 1;
+let autoIncome = parseInt(localStorage.getItem("autoIncome")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
+
+const coinText = document.getElementById("coin");
+const levelText = document.getElementById("level");
+
+function updateUI() {
+    coinText.innerText = "Coins: " + coins;
+    levelText.innerText = "Level: " + level;
+}
+
+function tap() {
+    coins += tapPower;
+    checkLevel();
+    save();
+    updateUI();
+
+    if(navigator.vibrate) navigator.vibrate(30);
+}
+
+function upgradeTap() {
+    if(coins >= 50) {
+        coins -= 50;
+        tapPower++;
+        save();
+        updateUI();
+    } else {
+        alert("Not enough coins!");
+    }
+}
+
+function buyAuto() {
+    if(coins >= 100) {
+        coins -= 100;
+        autoIncome++;
+        save();
+        updateUI();
+    } else {
+        alert("Not enough coins!");
+    }
+}
+
+function checkLevel() {
+    level = Math.floor(coins / 100) + 1;
+}
+
+function save() {
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("tapPower", tapPower);
+    localStorage.setItem("autoIncome", autoIncome);
+    localStorage.setItem("level", level);
+}
+
+// Auto income প্রতি 1 সেকেন্ডে
+setInterval(() => {
+    coins += autoIncome;
+    checkLevel();
+    save();
+    updateUI();
+}, 1000);
+
+updateUI();
+</script>
+
+</body>
+</html>
