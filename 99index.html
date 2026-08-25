@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ATF Mining Demo</title>
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+background:#050505;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+font-size:20px;
+}
+
+.badge{
+background:#111;
+padding:8px 15px;
+border-radius:20px;
+color:#00ff88;
+}
+
+.card{
+margin:15px;
+background:#101010;
+border-radius:25px;
+padding:20px;
+box-shadow:0 0 25px #ffb30055;
+}
+
+
+.assets{
+font-size:18px;
+color:#aaa;
+}
+
+.balance{
+font-size:45px;
+color:#00ff88;
+font-weight:bold;
+}
+
+
+.coin{
+
+width:200px;
+height:200px;
+
+margin:30px auto;
+
+border-radius:50%;
+
+background:
+radial-gradient(circle,#fff09a,#d49b00);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:55px;
+font-weight:bold;
+color:#333;
+
+box-shadow:
+0 0 30px gold,
+inset 0 0 20px #fff;
+
+animation:spin 4s linear infinite;
+
+}
+
+
+@keyframes spin{
+
+0%{
+transform:rotateY(0deg)
+}
+
+100%{
+transform:rotateY(360deg)
+}
+
+}
+
+
+.speed{
+color:#00ff88;
+font-size:22px;
+}
+
+
+button{
+
+width:90%;
+padding:18px;
+
+border:0;
+border-radius:30px;
+
+background:#ffb000;
+
+font-size:22px;
+font-weight:bold;
+
+}
+
+
+.menu{
+
+position:fixed;
+
+bottom:0;
+
+width:100%;
+
+background:#111;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:15px 0;
+
+}
+
+
+.menu div{
+
+font-size:14px;
+
+}
+
+
+.page{
+
+display:none;
+
+}
+
+
+.active{
+
+display:block;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+<div>
+
+<b>HMT</b><br>
+
+<span class="badge">
+LVL <span id="level">1</span>
+</span>
+
+</div>
+
+
+<div>
+🟢 READY
+</div>
+
+</div>
+
+
+
+<div id="mine" class="page active">
+
+
+<div class="card">
+
+
+<div class="assets">
+ASSETS
+</div>
+
+
+<div class="balance">
+
+<span id="coin">0</span>
+
+ATF
+
+</div>
+
+
+<div class="coin">
+
+ATF
+
+</div>
+
+
+
+<div class="speed">
+
++0.0073 / sec
+
+</div>
+
+
+<br>
+
+
+<button onclick="claim()">
+
+CLAIM
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+<div id="tasks" class="page">
+
+<div class="card">
+
+<h2>📜 Tasks</h2>
+
+<p>Join Telegram Channel +100 ATF</p>
+
+<p>Daily Login +50 ATF</p>
+
+</div>
+
+</div>
+
+
+
+
+<div id="friends" class="page">
+
+<div class="card">
+
+<h2>👥 Friends</h2>
+
+<h1 id="ref">0</h1>
+
+<p>Your Referral</p>
+
+<button onclick="invite()">
+Invite Friend
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+<div id="profile" class="page">
+
+
+<div class="card">
+
+<h2>👤 Profile</h2>
+
+<p>User: HMT</p>
+
+<p>Wallet: Not Connected</p>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="menu">
+
+
+<div onclick="openPage('mine')">
+⛏<br>Mine
+</div>
+
+
+<div onclick="openPage('tasks')">
+📜<br>Tasks
+</div>
+
+
+<div onclick="openPage('friends')">
+👥<br>Friends
+</div>
+
+
+<div onclick="openPage('profile')">
+👤<br>Profile
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+let coin =
+Number(localStorage.getItem("coin")) || 0;
+
+
+let level =
+Number(localStorage.getItem("level")) || 1;
+
+
+let ref =
+Number(localStorage.getItem("ref")) || 0;
+
+
+
+function update(){
+
+
+document.getElementById("coin").innerHTML=
+coin.toFixed(4);
+
+
+document.getElementById("level").innerHTML=
+level;
+
+
+document.getElementById("ref").innerHTML=
+ref;
+
+
+localStorage.setItem("coin",coin);
+
+localStorage.setItem("level",level);
+
+localStorage.setItem("ref",ref);
+
+
+}
+
+
+
+setInterval(()=>{
+
+
+coin+=0.0073;
+
+
+if(coin>level*100){
+
+level++;
+
+}
+
+
+update();
+
+
+},1000);
+
+
+
+function claim(){
+
+alert("Claim Complete");
+
+coin=0;
+
+update();
+
+}
+
+
+
+function invite(){
+
+ref++;
+
+coin+=10;
+
+update();
+
+alert("Referral Added +10 ATF");
+
+}
+
+
+
+
+function openPage(id){
+
+
+document.querySelectorAll(".page")
+.forEach(e=>e.classList.remove("active"));
+
+
+document.getElementById(id)
+.classList.add("active");
+
+
+}
+
+
+update();
+
+
+</script>
+
+
+</body>
+</html>
